@@ -36,6 +36,39 @@ export const createUserControllers = async (req: Request, res: Response): Promis
     }
 };
 
+export const updateUserControllers = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { name, addressLine1, country, city } = req.body;
+        const user = await UserModels.findById(req?.userId);
+
+        if (!user) {
+            res.status(500).json({
+                success: false,
+                message: 'User not found'
+            })
+            return;
+        }
+
+        user.name = name;
+        user.addressLine1 = addressLine1;
+        user.city = city;
+        user.country = country;
+
+        await user.save();
+
+        res.json(user);
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: "Error while updating user"
+        })
+
+    }
+}
+
 export default {
     createUserControllers,
+    updateUserControllers
 };
