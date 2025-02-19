@@ -4,6 +4,8 @@ import HomePage from "./pages/home/HomePage";
 import AuthCallbackPage from "./pages/AuthCallbackPage";
 
 import UserProfile from "./pages/user-profile/UserProfile";
+import ManageRestarant from "./pages/user-profile/ManageRestarant";
+import ProtectRoutes from "./auth/ProtectRoutes";
 export default function App() {
   return (
     <>
@@ -15,11 +17,17 @@ export default function App() {
         } />
 
         <Route path="/auth-callback" element={<AuthCallbackPage />} />
-        <Route path="/user-profile" element={
-          <Layout showHero={false}>
-            <UserProfile />
-          </Layout>} />
+        <Route element={<ProtectRoutes />}>
+          <Route path="/user-profile" element={
+            <Layout showHero={false}>
+              <UserProfile />
+            </Layout>} />
 
+          <Route path="/manage-restaurant" element={
+            <Layout showHero={false}>
+              <ManageRestarant />
+            </Layout>} />
+        </Route>
         <Route path="*" element={<Navigate to={"/"} />} />
       </Routes>
     </>

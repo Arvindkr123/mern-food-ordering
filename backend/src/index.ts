@@ -3,6 +3,11 @@ import cors from "cors";
 import "dotenv/config";
 import connectionDbHandler from "./utils/dbConnections";
 import userRoutes from "./routes/user.routes";
+import myRestaurentRoutes from "./routes/restaurent.routes";
+import { v2 as cloudinary } from 'cloudinary';
+import { envConfig } from "./utils/env.config";
+
+
 
 const app = express();
 
@@ -21,10 +26,17 @@ app.use(cors({
   }
 }));
 
+cloudinary.config({
+  cloud_name: envConfig.CLOUDINARY_cloud_name,
+  api_key: envConfig.CLOUDINARY_api_key,
+  api_secret: envConfig.CLOUDINARY_api_secret
+});
+
 
 // Routes
 
 app.use("/api/my/user", userRoutes)
+app.use("/api/my/resturant", myRestaurentRoutes)
 
 
 app.get("/test", async (req: Request, res: Response) => {

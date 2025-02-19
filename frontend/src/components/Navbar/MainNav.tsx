@@ -10,7 +10,7 @@ const MainNav = () => {
         <>
             <span>
                 {
-                    isAuthenticated ? <UserMenuName/>: <Button onClick={async () => await loginWithRedirect()} variant={'ghost'} className="font-bold hover:text-orange-500 hover:bg-white">Login</Button>
+                    isAuthenticated ? <UserMenuName /> : <Button onClick={async () => await loginWithRedirect()} variant={'ghost'} className="font-bold hover:text-orange-500 hover:bg-white">Login</Button>
                 }
             </span>
 

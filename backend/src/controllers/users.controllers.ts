@@ -1,6 +1,25 @@
 import { Request, Response } from "express";
 import UserModels from "../models/user.models";
 
+export const getCurrentUserControllers = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const currentUser = await UserModels.findOne({ _id: req.userId });
+
+        if (!currentUser) {
+            res.status(404).json({ message: 'user not found' });
+            return;
+        }
+
+        res.json(currentUser);
+    } catch (error) {
+        console.error("Error creating user:", error);
+
+        res.status(500).json({
+            message: "Error creating user",
+            error: error instanceof Error ? error.message : "Unknown error",
+        });
+    }
+};
 export const createUserControllers = async (req: Request, res: Response): Promise<void> => {
     try {
         const { auth0Id, ...rest } = req.body;
@@ -70,5 +89,6 @@ export const updateUserControllers = async (req: Request, res: Response): Promis
 
 export default {
     createUserControllers,
-    updateUserControllers
+    updateUserControllers,
+    getCurrentUserControllers
 };
