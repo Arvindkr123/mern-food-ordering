@@ -8,12 +8,15 @@ import {
 import { Input } from "@/components/ui/input";
 import { useFormContext, ControllerRenderProps } from "react-hook-form";
 import { useState } from "react";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 const MAX_FILE_SIZE_MB = 5;
 
 const ImageSection = () => {
-  const { control, setError, clearErrors } = useFormContext();
+  const { control, setError, clearErrors, watch } = useFormContext();
   const [fileName, setFileName] = useState<string | null>(null);
+
+  const existingImageUrl = watch("imageUrl");
 
   const handleFileChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -50,7 +53,17 @@ const ImageSection = () => {
           search results. Adding a new image will overwrite the existing one.
         </FormDescription>
       </div>
-      <div className="flex flex-col gap-8 w-[50%]">
+      <div className="flex flex-col gap-8 md:w-[50%]">
+        {existingImageUrl && (
+          <AspectRatio ratio={16 / 9}>
+            <img
+              src={existingImageUrl}
+              alt="my restaurant image"
+              className="rounded-md object-cover w-full h-full"
+            />
+          </AspectRatio>
+        )}
+
         <FormField
           control={control}
           name="imageFile"

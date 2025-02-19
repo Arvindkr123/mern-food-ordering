@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import RestaurantModels from "../models/restaurant.models";
 import { v2 as cloudinary } from "cloudinary";
 import mongoose from "mongoose";
+
 const createMyRestaruant = async (
   req: Request,
   res: Response
@@ -45,6 +46,29 @@ const createMyRestaruant = async (
   }
 };
 
+export const getMyRestaruant = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const restaurant = await RestaurantModels.findOne({ user: req.userId });
+    if (!restaurant) {
+      res.status(404).json({
+        message: "restaurant not found",
+      });
+      return;
+    }
+
+    res.json(restaurant);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Something went wrong",
+    });
+  }
+};
+
 export default {
   createMyRestaruant,
+  getMyRestaruant,
 };
