@@ -6,6 +6,49 @@ import { toast } from "sonner";
 
 const API_BASE_URL = envConfigFrontend.API_BASE_URL;
 
+export const useUpdateMyRestaurant = () => {
+  const { getAccessTokenSilently } = useAuth0();
+
+  const updateMyRestaurantRequest = async (
+    restaurantFormData: FormData
+  ): Promise<RestaurantType> => {
+    const accessToken = await getAccessTokenSilently();
+
+    const response = await fetch(`${API_BASE_URL}/api/my/resturant`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: restaurantFormData,
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to create restaurant");
+    }
+
+    return response.json();
+  };
+
+  const {
+    mutate: updateRestaurant,
+    isLoading,
+    isSuccess,
+    error,
+  } = useMutation(updateMyRestaurantRequest);
+
+  if (isSuccess) {
+    toast.success("Restaurant updated");
+  }
+  if (error) {
+    toast.error("unable to update restaurant");
+  }
+
+  return {
+    isLoading,
+    updateRestaurant,
+  };
+};
+
 export const useGetMyRestaurant = () => {
   const { getAccessTokenSilently } = useAuth0();
 
