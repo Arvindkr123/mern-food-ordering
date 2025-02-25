@@ -4,6 +4,7 @@ import "dotenv/config";
 import connectionDbHandler from "./utils/dbConnections";
 import userRoutes from "./routes/user.routes";
 import myRestaurentRoutes from "./routes/restaurent.routes";
+import myRestaurentSearchRoutes from "./routes/search.restaurent.routes";
 import { v2 as cloudinary } from "cloudinary";
 import { envConfig } from "./utils/env.config";
 
@@ -36,6 +37,7 @@ cloudinary.config({
 
 app.use("/api/my/user", userRoutes);
 app.use("/api/my/resturant", myRestaurentRoutes);
+app.use("/api/resturant", myRestaurentSearchRoutes);
 
 app.get("/test", async (req: Request, res: Response) => {
   res.json({ message: "Hello!" });
